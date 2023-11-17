@@ -23,7 +23,13 @@ jobs:
 
   build-cpp-ubuntu:
     name: Build C++ libraries Ubuntu
-    runs-on: ubuntu-latest
+    runs-on: {{ '${{ matrix.platform.runs_on }}' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { runs_on: ["ubuntu-latest"], arch: "x86_64"}
+          - { runs_on: ["buildjet-4vcpu-ubuntu-2204"], arch: "aarch_64" }
     steps:
       {{ macros.github_checkout_arrow()|indent }}
       {{ macros.github_install_archery()|indent }}
